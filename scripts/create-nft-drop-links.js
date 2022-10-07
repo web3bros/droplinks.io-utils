@@ -79,7 +79,7 @@ if (nftMints.length < dropLinksAmount) {
 console.log(`# The wallet contains ${nftMints.length} NFTs, will create ${dropLinksAmount} drop links and fund them from the wallet ${walletKeyPair.publicKey.toBase58()}\n`)
 
 const response = await axios.post(
-  "https://staging.droplinks.io/api/v1/drop-links/create/", {
+  "https://droplinks.io/api/v1/drop-links/create/", {
     dropLinksAmount,
     campaign,
     dropLinkType: "NFT",
@@ -155,5 +155,3 @@ for (let dropLink of response.data.dropLinks) {
   console.log(`\ttransaction id: ${txId}`)
   console.log(`\tsolscan.io: https://solscan.io/tx/${txId}\n`)
 }
-
-process.exit(0)
