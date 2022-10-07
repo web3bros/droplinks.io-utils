@@ -38,7 +38,7 @@ if (!dropLinksApiKey) {
 const solanaConnection = new Connection(solanaEndpoint);
 
 const response = await axios.post(
-  "http://localhost:1000/api/v1/drop-links/create/", {
+  "https://droplinks.io/api/v1/drop-links/create/", {
     dropLinksAmount,
   }, {
     headers: {
