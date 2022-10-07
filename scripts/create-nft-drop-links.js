@@ -42,19 +42,6 @@ if (!dropLinksApiKey) {
 
 const solanaConnection = new Connection(solanaEndpoint);
 
-const response = await axios.post(
-  "https://droplinks.io/api/v1/drop-links/create/", {
-    dropLinksAmount,
-    campaign,
-    dropLinkType: "NFT",
-    locked
-  }, {
-    headers: {
-      "x-api-key": dropLinksApiKey
-    }
-  }
-)
-
 // create an account key pair from the secret key
 const walletKeyPair = Keypair.fromSecretKey(
   bs58.decode(secretKey)
@@ -85,7 +72,24 @@ for (let tokenAccount of tokenAccounts.value) {
   }
 }
 
-console.log(`# Will create ${dropLinksAmount} drop links and fund them from the wallet ${walletKeyPair.publicKey.toBase58()}\n`)
+if (nftMints.length < dropLinksAmount) {
+  dropLinksAmount = nftMints.length
+}
+
+console.log(`# The wallet contains ${nftMints.length} NFTs, will create ${dropLinksAmount} drop links and fund them from the wallet ${walletKeyPair.publicKey.toBase58()}\n`)
+
+const response = await axios.post(
+  "https://staging.droplinks.io/api/v1/drop-links/create/", {
+    dropLinksAmount,
+    campaign,
+    dropLinkType: "NFT",
+    locked
+  }, {
+    headers: {
+      "x-api-key": dropLinksApiKey
+    }
+  }
+)
 
 // loop through all the drop links and transfer a random nft in them
 for (let dropLink of response.data.dropLinks) {
