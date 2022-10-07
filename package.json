@@ -1,0 +1,14 @@
+{
+  "name": "droplinks.io-utils",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "repository": "git@github.com:web3bros/droplinks.io-utils.git",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/spl-token": "0.1.8",
+    "@solana/web3.js": "^1.63.1",
+    "axios": "^1.1.2",
+    "bs58": "^5.0.0"
+  }
+}
