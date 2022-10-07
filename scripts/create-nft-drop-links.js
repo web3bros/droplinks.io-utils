@@ -12,7 +12,8 @@ import {
 import bs58 from "bs58";
 import * as SPLToken from "@solana/spl-token";
 
-let secretKey, dropLinksAmount = 1, dropLinksApiKey, solanaEndpoint = "https://api.mainnet-beta.solana.com"
+let secretKey, dropLinksAmount = 1, dropLinksApiKey, solanaEndpoint = "https://api.mainnet-beta.solana.com", campaign,
+  locked = false
 process.argv.forEach((arg, index) => {
   if (arg === "--wallet-secret-key") {
     secretKey = process.argv[index + 1]
@@ -22,6 +23,10 @@ process.argv.forEach((arg, index) => {
     dropLinksAmount = parseInt(process.argv[index + 1])
   } else if (arg === "--solana-endpoint") {
     solanaEndpoint = process.argv[index + 1]
+  } else if (arg === "--campaign") {
+    campaign = process.argv[index + 1]
+  } else if (arg === "--locked") {
+    locked = true
   }
 })
 
@@ -40,6 +45,9 @@ const solanaConnection = new Connection(solanaEndpoint);
 const response = await axios.post(
   "https://droplinks.io/api/v1/drop-links/create/", {
     dropLinksAmount,
+    campaign,
+    dropLinkType: "NFT",
+    locked
   }, {
     headers: {
       "x-api-key": dropLinksApiKey
