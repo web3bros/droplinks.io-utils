@@ -21,6 +21,10 @@ process.argv.forEach((arg, index) => {
     dropLinksApiKey = process.argv[index + 1]
   } else if (arg === "--links-amount") {
     dropLinksAmount = parseInt(process.argv[index + 1])
+    if (dropLinksAmount < 1 || dropLinksAmount > 500) {
+      console.log("Links amount must be between 1 and 500")
+      process.exit(1)
+    }
   } else if (arg === "--solana-endpoint") {
     solanaEndpoint = process.argv[index + 1]
   } else if (arg === "--campaign") {
@@ -78,7 +82,7 @@ if (nftMints.length < dropLinksAmount) {
 
 console.log(`# The wallet contains ${nftMints.length} NFTs, will create ${dropLinksAmount} drop links and fund them from the wallet ${walletKeyPair.publicKey.toBase58()}\n`)
 
-const response = await axios.post(
+const dropLinks = await axios.post(
   "https://droplinks.io/api/v1/drop-links/create/", {
     dropLinksAmount,
     campaign,
@@ -89,10 +93,13 @@ const response = await axios.post(
       "x-api-key": dropLinksApiKey
     }
   }
-)
+).then(res => res.data.dropLinks).catch(err => {
+  console.log("Error creating drop links", err.response.data)
+  process.exit(1)
+})
 
 // loop through all the drop links and transfer a random nft in them
-for (let dropLink of response.data.dropLinks) {
+for (let dropLink of dropLinks) {
   const nftMint = nftMints.pop()
   if (!nftMint) {
     console.error("No more nfts in the wallet")
