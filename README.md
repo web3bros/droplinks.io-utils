@@ -15,4 +15,4 @@ node scripts/create-nft-drop-links.js \
   --solana-endpoint "https://api.mainnet-beta.solana.com"
 ```
 
-To avoid getting 429 from the public solana endpoint please use your own endpoint
+To avoid getting 429 from the public solana endpoint please use your own endpoint or get in touch and we will provide you with one
